@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,9 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1gaaqxawql#8e9+4i5y_q0v77-*tzpe2-47zq(u*(7!90-q2et'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG","False") == "True"
 
-ALLOWED_HOSTS = []
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost').split(',')
+
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'http://localhost').split(',')
 
 
 # Application definition
@@ -82,19 +85,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-CORS_ALLOW_ALL_ORIGINS = True
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'curso_sistema_erp',
-        'USER': 'root',
-        'PORT': 3306
+        'NAME': 'defaultdb',
+        'HOST': 'db-mysql-nyc3-erp-do-user-19938735-0.k.db.ondigitalocean.com', 
+        'USER': 'doadmin',  
+        'PASSWORD': 'AVNS_gahZtLoHuYLkJ8PLNFc', 
+        'PORT': 25060
     }
-}
+}   
 
 
 # Password validation
@@ -133,6 +136,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

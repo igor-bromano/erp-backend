@@ -9,7 +9,7 @@ from rest_framework.exceptions import APIException
 import datetime
 
 
-class Tasks(Base):
+class Tasks(Base):  
     permission_classes = [TaskPermission]
 
     def get(self, request):
@@ -35,8 +35,10 @@ class Tasks(Base):
         if not title or len(title) > 125:
             raise APIException("Envie um título válido, para essa tarefa.")
 
+        print(due_date)
+
         if due_date:
-            try:
+            try:    
                 due_date = datetime.datetime.strptime(
                     due_date, "%d/%m/%Y %H:%M")
             except ValueError:
@@ -82,7 +84,7 @@ class TaskDetail(Base):
         # Validators
         self.get_status(status_id)
         self.get_employee(employee_id, request.user.id)
-
+        
         if due_date and due_date != task.due_date:
             try:
                 due_date = datetime.datetime.strptime(
